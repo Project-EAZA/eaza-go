@@ -1,12 +1,18 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"eaza-go/database"
+	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
+	"log"
+)
 
 func main() {
+	_ = godotenv.Load()
+
 	app := fiber.New()
 
-	v1 := app.Group("/v1")
+	database.Connect()
 
-	course := v1.Group("/course")
-	course.Get("")
+	log.Fatal(app.Listen(":3000"))
 }
