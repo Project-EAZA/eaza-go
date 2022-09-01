@@ -1,4 +1,4 @@
-package course
+package model
 
 // Course is the model of a course
 type Course struct {
@@ -12,6 +12,16 @@ type Course struct {
 	Description  string     `bson:"description"`
 	Requirement  string     `bson:"requirement"`
 	Teachings    []Teaching `bson:"teachings"`
+}
+
+func (c *Course) AvgGPA() float32 {
+	total := DefaultGrades()
+	for _, t := range c.Teachings {
+		for _, s := range t.Sections {
+			total.Add(&s.Grades)
+		}
+	}
+	return total.GPA()
 }
 
 type Breadth struct {
@@ -80,23 +90,4 @@ type Schedule struct {
 	Times Times  `bson:"times"`
 	Days  Days   `bson:"days"`
 	UUID  string `bson:"uuid"`
-}
-
-type Grades struct {
-	A     int `bson:"A"`
-	Ab    int `bson:"AB"`
-	Nw    int `bson:"NW"`
-	I     int `bson:"I"`
-	Other int `bson:"OTHER"`
-	D     int `bson:"D"`
-	S     int `bson:"S"`
-	Cr    int `bson:"CR"`
-	Bc    int `bson:"BC"`
-	N     int `bson:"N"`
-	Nr    int `bson:"NR"`
-	C     int `bson:"C"`
-	U     int `bson:"U"`
-	B     int `bson:"B"`
-	F     int `bson:"F"`
-	P     int `bson:"P"`
 }
