@@ -5,9 +5,13 @@ import (
 	"eaza-go/internal/common"
 	"eaza-go/internal/course"
 	"github.com/bytedance/sonic"
+	"github.com/go-redis/redis/v8"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/joho/godotenv"
 	"log"
+	"os"
+	"time"
 )
 
 func main() {
@@ -35,6 +39,16 @@ func main() {
 		},
 	})
 
+	app.Use(cache.New(cache.Config{
+		KeyGenerator: func(ctx *fiber.Ctx) string {
+			return ctx.Request().URI().String()
+		},
+		Storage: database.NewRedisClient(&redis.Options{
+			Addr: os.Getenv("REDIS_URL"),
+		}),
+		Expiration: time.Minute,
+	}))
+
 	database.Connect()
 
 	v1 := app.Group("/v1")
@@ -47,5 +61,6 @@ func main() {
 func registerPlugin(r fiber.Router) {
 	g := r.Group("/plugin")
 	c := course.NewController(&course.ServiceImpl{DB: database.DB})
-	g.Post("/course", c.GetCourseByAbbrAndNumber)
+	g.Get("/course", c.GetCourseByAbbrAndNumber)
+	g.Get("/grade", c.GetGradesBySubject)
 }

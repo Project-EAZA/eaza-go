@@ -1,14 +1,16 @@
 package model
 
 type Course struct {
-	Title         string     `bson:"title"`
-	CatalogNumber string     `bson:"catalogNumber"`
-	Subject       Subject    `bson:"subject"`
-	GeneralEd     GeneralEd  `bson:"generalEd"`
-	Level         []Level    `bson:"level"`
-	Breadths      []Breadth  `bson:"breadths"`
-	Teachings     []Teaching `bson:"teachings"`
-	Repeatable    string     `bson:"repeatable"`
+	CourseId      string        `bson:"courseId"`
+	Title         string        `bson:"title"`
+	CatalogNumber string        `bson:"catalogNumber"`
+	Subject       Subject       `bson:"subject"`
+	GeneralEd     GeneralEd     `bson:"generalEd"`
+	Level         []Level       `bson:"level"`
+	Breadths      []Breadth     `bson:"breadths"`
+	Repeatable    string        `bson:"repeatable"`
+	EthnicStudies EthnicStudies `json:"ethnicStudies"`
+	Teachings     []Teaching    `bson:"teachings"`
 }
 
 func (c *Course) AvgGPA() float32 {
@@ -19,6 +21,19 @@ func (c *Course) AvgGPA() float32 {
 		}
 	}
 	return total.GPA()
+}
+func (c *Course) bind(other *Course) {
+	if other != nil {
+		c.CourseId = other.CourseId
+		c.Title = other.Title
+		c.CatalogNumber = other.CatalogNumber
+		c.Subject = other.Subject
+		c.GeneralEd = other.GeneralEd
+		c.Level = other.Level
+		c.Breadths = other.Breadths
+		c.Repeatable = other.Repeatable
+		c.Teachings = other.Teachings
+	}
 }
 
 type Breadth struct {
@@ -47,8 +62,7 @@ type Instructor struct {
 }
 
 type Teaching struct {
-	TermCode int `bson:"termCode"`
-	//Subjects []Subject `bson:"subjects"`
+	TermCode int       `bson:"termCode"`
 	Sections []Section `bson:"sections"`
 }
 
@@ -57,7 +71,7 @@ type Section struct {
 	CourseNumber  int          `bson:"courseNumber"`
 	SectionNumber int          `bson:"sectionNumber"`
 	Instructors   []Instructor `bson:"instructors"`
-	Grades        Grades
+	Grades        Grades       `bson:"grades"`
 }
 
 type Times struct {
@@ -81,10 +95,9 @@ type Schedule struct {
 }
 
 type Subject struct {
-	SubjectCode       string `bson:"subjectCode"`
-	Description       string `bson:"description"`
-	ShortDescription  string `bson:"shortDescription"`
-	FormalDescription string `bson:"formalDescription"`
+	SubjectCode      string `bson:"subjectCode"`
+	Description      string `bson:"description"`
+	ShortDescription string `bson:"shortDescription"`
 }
 
 type SchoolCollege struct {

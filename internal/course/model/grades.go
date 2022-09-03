@@ -60,6 +60,10 @@ func (g *Grades) Add(other *Grades) {
 }
 
 func (g *Grades) GPA() float32 {
+	// in case total is zero, otherwise answer will be NaN
+	if g.Total() == 0 {
+		return 0.0
+	}
 	return g.GradesSum() / float32(g.Total())
 }
 
