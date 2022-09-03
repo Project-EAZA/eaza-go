@@ -20,7 +20,7 @@ func main() {
 			// Status code defaults to 500
 			code := fiber.StatusInternalServerError
 
-			// Retrieve the custom status code if it's an fiber.*Error
+			// Retrieve the custom status code if it's a fiber.*Error
 			if e, ok := err.(*fiber.Error); ok {
 				code = e.Code
 			}
@@ -47,5 +47,5 @@ func main() {
 func registerPlugin(r fiber.Router) {
 	g := r.Group("/plugin")
 	c := course.NewController(&course.ServiceImpl{DB: database.DB})
-	g.Post("/course", c.GetCourseByNumberAndName)
+	g.Post("/course", c.GetCourseByAbbrAndNumber)
 }

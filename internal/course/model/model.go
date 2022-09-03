@@ -1,17 +1,14 @@
 package model
 
-// Course is the model of a course
 type Course struct {
-	UUID         string     `bson:"uuid"`
-	CourseNumber int        `bson:"courseNumber"`
-	Name         string     `bson:"name"`
-	Breadths     []Breadth  `bson:"breadths"`
-	Ethnic       Ethnic     `bson:"ethnic"`
-	Level        Level      `bson:"level"`
-	GE           GE         `bson:"GE"`
-	Description  string     `bson:"description"`
-	Requirement  string     `bson:"requirement"`
-	Teachings    []Teaching `bson:"teachings"`
+	Title         string     `bson:"title"`
+	CatalogNumber string     `bson:"catalogNumber"`
+	Subject       Subject    `bson:"subject"`
+	GeneralEd     GeneralEd  `bson:"generalEd"`
+	Level         []Level    `bson:"level"`
+	Breadths      []Breadth  `bson:"breadths"`
+	Teachings     []Teaching `bson:"teachings"`
+	Repeatable    string     `bson:"repeatable"`
 }
 
 func (c *Course) AvgGPA() float32 {
@@ -25,23 +22,23 @@ func (c *Course) AvgGPA() float32 {
 }
 
 type Breadth struct {
-	Name string `bson:"name"`
-	Code string `bson:"code"`
+	Description string `bson:"description"`
+	Code        string `bson:"code"`
 }
 
 type Level struct {
-	Name string `bson:"name"`
-	Code string `bson:"code"`
+	Description string `bson:"description"`
+	Code        string `bson:"code"`
 }
 
-type Ethnic struct {
-	Name string `bson:"name"`
-	Code string `bson:"code"`
+type GeneralEd struct {
+	Description string `bson:"description"`
+	Code        string `bson:"code"`
 }
 
-type GE struct {
-	Name string `bson:"name"`
-	Code string `bson:"code"`
+type EthnicStudies struct {
+	Description string `bson:"description"`
+	Code        string `bson:"code"`
 }
 
 type Instructor struct {
@@ -50,26 +47,17 @@ type Instructor struct {
 }
 
 type Teaching struct {
-	TermCode int       `bson:"termCode"`
-	Subjects []Subject `bson:"subjects"`
+	TermCode int `bson:"termCode"`
+	//Subjects []Subject `bson:"subjects"`
 	Sections []Section `bson:"sections"`
 }
 
 type Section struct {
 	TermCode      int          `bson:"termCode"`
 	CourseNumber  int          `bson:"courseNumber"`
-	SectionType   string       `bson:"sectionType"`
 	SectionNumber int          `bson:"sectionNumber"`
-	Schedule      Schedule     `bson:"schedule"`
-	Room          Room         `bson:"room"`
 	Instructors   []Instructor `bson:"instructors"`
 	Grades        Grades
-}
-
-type Subject struct {
-	Name         string `bson:"name"`
-	Abbreviation string `bson:"abbreviation"`
-	Code         string `bson:"code"`
 }
 
 type Times struct {
@@ -90,4 +78,20 @@ type Schedule struct {
 	Times Times  `bson:"times"`
 	Days  Days   `bson:"days"`
 	UUID  string `bson:"uuid"`
+}
+
+type Subject struct {
+	SubjectCode       string `bson:"subjectCode"`
+	Description       string `bson:"description"`
+	ShortDescription  string `bson:"shortDescription"`
+	FormalDescription string `bson:"formalDescription"`
+}
+
+type SchoolCollege struct {
+	AcademicOrgCode   string      `bson:"academicOrgCode"`
+	AcademicGroupCode string      `bson:"academicGroupCode"`
+	ShortDescription  string      `bson:"shortDescription"`
+	FormalDescription string      `bson:"formalDescription"`
+	UddsCode          interface{} `bson:"uddsCode"`
+	SchoolCollegeURI  string      `bson:"schoolCollegeURI"`
 }

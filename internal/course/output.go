@@ -1,27 +1,27 @@
 package course
 
-import (
-	"eaza-go/internal/course/model"
-)
+import "eaza-go/internal/course/model"
 
-type BriefCourse struct {
-	Name         string          `json:"name"`
-	CourseNumber int             `json:"courseNumber"`
-	Breadths     []model.Breadth `json:"breadths"`
-	Level        model.Level     `json:"level"`
-	GE           model.GE        `json:"GE"`
-	Ethnic       model.Ethnic    `json:"ethnic"`
-	GPA          float32         `json:"GPA"`
+type Overview struct {
+	Title         string          `json:"title"`
+	CatalogNumber string          `json:"catalogNumber"`
+	Subject       model.Subject   `json:"subject"`
+	GeneralEd     model.GeneralEd `json:"generalEd"`
+	Level         []model.Level   `json:"level"`
+	Breadths      []model.Breadth `json:"breadths"`
+	Repeatable    string          `json:"repeatable"`
+	GPA           float32         `json:"GPA"`
 }
 
-func NewBriefCourse(c *model.Course) BriefCourse {
-	return BriefCourse{
-		Name:         c.Name,
-		CourseNumber: c.CourseNumber,
-		Breadths:     c.Breadths,
-		Level:        c.Level,
-		GE:           c.GE,
-		Ethnic:       c.Ethnic,
-		GPA:          c.AvgGPA(),
+func NewOverviewFromCourse(c model.Course) Overview {
+	return Overview{
+		Title:         c.Title,
+		CatalogNumber: c.CatalogNumber,
+		Subject:       c.Subject,
+		GeneralEd:     c.GeneralEd,
+		Level:         c.Level,
+		Breadths:      c.Breadths,
+		Repeatable:    c.Repeatable,
+		GPA:           c.AvgGPA(),
 	}
 }

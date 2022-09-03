@@ -8,10 +8,31 @@ import (
 
 type Controller interface {
 	GetCourseByNumberAndName(ctx *fiber.Ctx) error
+	GetCourseByAbbrAndNumber(ctx *fiber.Ctx) error
 }
 
 type ControllerImpl struct {
 	service Service
+}
+
+func (c *ControllerImpl) GetCourseByAbbrAndNumber(ctx *fiber.Ctx) error {
+	req := new(AbbrAndNumberRequest)
+	if err := ctx.BodyParser(req); err != nil {
+		return err
+	}
+
+	var course model.Course
+	err := c.service.FindCourseBySubject(req.Abbr, req.Number, &course)
+	if err != nil {
+		return err
+	}
+
+	err = ctx.JSON(common.NewSuccessResponse(NewOverviewFromCourse(course)))
+
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func NewController(service Service) Controller {
@@ -30,7 +51,7 @@ func (c *ControllerImpl) GetCourseByNumberAndName(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	err = ctx.JSON(common.NewSuccessResponse(NewBriefCourse(&course)))
+	err = ctx.JSON(common.NewSuccessResponse(course))
 
 	if err != nil {
 		return err

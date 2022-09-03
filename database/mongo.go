@@ -16,8 +16,12 @@ type DataBase struct {
 	DB     *mongo.Database
 }
 
-func (db *DataBase) Courses() *mongo.Collection {
-	return db.DB.Collection("courses")
+func (db *DataBase) Course() *mongo.Collection {
+	return db.DB.Collection("course")
+}
+
+func (db *DataBase) Info() *mongo.Collection {
+	return db.DB.Collection("info")
 }
 
 // Connect connects to the mongodb

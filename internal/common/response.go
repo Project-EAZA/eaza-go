@@ -11,7 +11,7 @@ type ErrorResponse struct {
 	Code    int    `json:"code"`
 	Msg     string `json:"msg"`
 	Success bool   `json:"success"`
-	Err     error  `json:"err"`
+	Err     string `json:"err"`
 }
 
 func NewSuccessResponse[T any](data T) Response[T] {
@@ -27,7 +27,7 @@ func NewErrorResponse(code int, err error) ErrorResponse {
 	return ErrorResponse{
 		Code:    code,
 		Msg:     "Error",
-		Err:     err,
+		Err:     err.Error(),
 		Success: false,
 	}
 }
